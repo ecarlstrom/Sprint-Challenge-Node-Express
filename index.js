@@ -108,7 +108,7 @@ server.put('/api/projects/:id', (req, res) => {
   projectData.update(id, newProject)
     .then(project => {
       console.log(project);
-      res.status(200).json(project);
+      res.status(200).json(newProject);
     })
     .catch(err => console.error(err));
 });
@@ -123,4 +123,24 @@ server.delete('/api/projects/:id', (req, res) => {
       res.status(200).json(removedProject);
     })
     .catch(err => console.error(err));
+});
+
+// get project actions
+
+server.get("/api/projects/:id/actions", (req, res) => {
+  projectData
+    .getProjectActions(req.params.id)
+    .then(project => {
+      if (project.length > 0) {
+        res.json(project);
+      } else
+        res.status(404).json({
+          message: "No project exists by this ID. </3"
+        });
+    })
+    .catch(err =>
+      res
+        .status(500)
+        .json({ error: "Project information could not be retrieved. </3 " })
+    );
 });
